@@ -65,7 +65,7 @@
   "shortcuts": {
     "start_pause": "Space",
     "reset": "r",
-    "next_activity": "Ctrl+n"
+    "next_activity": "t"
   },
   
   "features": {

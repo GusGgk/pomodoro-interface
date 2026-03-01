@@ -19,11 +19,9 @@ export function setupKeyboardShortcuts() {
                 e.preventDefault();
                 resetTimer();
                 break;
-            case 'n':
-                if (e.ctrlKey) {
-                    e.preventDefault();
-                    selectNextActivity();
-                }
+            case 't':
+                e.preventDefault();
+                selectNextActivity();
                 break;
         }
     });

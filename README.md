@@ -219,7 +219,7 @@ O ESP32 pode funcionar em **2 modos**:
 |-------|------|
 | `Espaço` | Play/Pause |
 | `R` | Reset |
-| `Ctrl+N` | Próxima atividade |
+| `T` | Próxima atividade |
 
 ---
 
