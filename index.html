@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Pro - GK</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>🍅 Pomodoro Pro - GK</h1>
+            <span class="version">v2.0</span>
+        </div>
+        <div class="header-right">
+            <span id="connection" class="connection-badge">Conectando...</span>
+            <button id="themeToggle" class="icon-btn" title="Alternar tema">
+                <img src="assets/icons/play.svg" width="20" height="20">
+            </button>
+            <button id="settingsBtn" class="icon-btn" title="Configurações">⚙️</button>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="timer">Timer</button>
+        <button class="tab-btn" data-tab="stats">Estatísticas</button>
+        <button class="tab-btn" data-tab="activities">Atividades</button>
+        <button class="tab-btn" data-tab="settings">Configurações</button>
+    </nav>
+
+    <main>
+        <!-- TAB: TIMER -->
+        <div class="tab-content active" id="tab-timer">
+            <section id="timer">
+                <div class="timer-container">
+                    <!-- Progresso Circular -->
+                    <svg class="progress-ring" width="280" height="280">
+                        <circle class="progress-ring-circle-bg" stroke="var(--border-color)" 
+                                stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                        <circle id="progressCircle" class="progress-ring-circle" 
+                                stroke="var(--accent-primary)" stroke-width="8" 
+                                fill="transparent" r="130" cx="140" cy="140"
+                                stroke-dasharray="816.81 816.81"
+                                stroke-dashoffset="0"/>
+                    </svg>
+                    
+                    <div class="timer-content">
+                        <div class="status" id="status">FOCO</div>
+                        <div class="time" id="time">25:00</div>
+                        <div class="timer-info">
+                            <span id="sessionInfo">Sessão 1 de 4</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="control">
+                <button id="startPause" class="primary">
+                    <img src="assets/icons/play.svg" alt="Play/Pause">
+                </button>
+                <button id="reset" class="secondary">
+                    <img src="assets/icons/reset.svg" width="55" height="55" alt="Reset">
+                </button>
+            </section>
+
+            <section class="quick-stats">
+                <div class="stat-card">
+                    <span class="stat-value" id="cyclesCount">0</span>
+                    <span class="stat-label">Ciclos Hoje</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="todayFocus">0</span>
+                    <span class="stat-label">Minutos</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="todayStreak">0</span>
+                    <span class="stat-label">Sequência</span>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB: ESTATÍSTICAS -->
+        <div class="tab-content" id="tab-stats">
+            <section>
+                <h2>📊 Visão Geral</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon">📅</div>
+                        <div>
+                            <div class="stat-title">Hoje</div>
+                            <div class="stat-number"><span id="stat-today-sessions">0</span> sessões</div>
+                            <div class="stat-detail"><span id="stat-today-minutes">0</span> minutos</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">📆</div>
+                        <div>
+                            <div class="stat-title">Esta Semana</div>
+                            <div class="stat-number"><span id="stat-week-sessions">0</span> sessões</div>
+                            <div class="stat-detail"><span id="stat-week-minutes">0</span> minutos</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">🎯</div>
+                        <div>
+                            <div class="stat-title">Total</div>
+                            <div class="stat-number"><span id="stat-total-sessions">0</span> sessões</div>
+                            <div class="stat-detail"><span id="stat-total-minutes">0</span> minutos</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">🔥</div>
+                        <div>
+                            <div class="stat-title">Melhor Sequência</div>
+                            <div class="stat-number"><span id="stat-best-streak">0</span> dias</div>
+                            <div class="stat-detail">Continue assim!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>📈 Gráfico Semanal</h2>
+                <canvas id="weekChart" width="400" height="200"></canvas>
+            </section>
+
+            <section class="history">
+                <h2>🕐 Histórico Recente</h2>
+                <div id="historyList"></div>
+                <button id="exportBtn" class="secondary full-width">📥 Exportar Dados</button>
+            </section>
+        </div>
+
+        <!-- TAB: ATIVIDADES -->
+        <div class="tab-content" id="tab-activities">
+            <section id="activity">
+                <h2>📋 Suas Atividades</h2>
+                <div id="activityList"></div>
+            </section>
+
+            <section id="create_activity">
+                <h2>➕ Criar Nova Atividade</h2>
+                <input type="text" id="activityName" placeholder="Nome da atividade">
+                
+                <div class="input-group">
+                    <label>Categoria</label>
+                    <select id="activityCategory">
+                        <option value="work">💼 Trabalho</option>
+                        <option value="study">📚 Estudo</option>
+                        <option value="exercise">🏃 Exercício</option>
+                        <option value="creative">🎨 Criativo</option>
+                        <option value="other">📌 Outro</option>
+                    </select>
+                </div>
+
+                <div class="time-inputs">
+                    <div class="input-group">
+                        <label>Foco (min)</label>
+                        <input type="number" id="focusTime" placeholder="25" value="25">
+                    </div>
+                    <div class="input-group">
+                        <label>Pausa (min)</label>
+                        <input type="number" id="breakTime" placeholder="5" value="5">
+                    </div>
+                </div>
+
+                <button id="saveActivity" class="primary full-width">💾 Salvar Atividade</button>
+            </section>
+        </div>
+
+        <!-- TAB: CONFIGURAÇÕES -->
+        <div class="tab-content" id="tab-settings">
+            <section>
+                <h2>⚙️ Configurações Gerais</h2>
+                
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-title">🔔 Notificações</div>
+                        <div class="setting-desc">Receber notificações ao terminar</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-notifications" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-title">🔊 Sons</div>
+                        <div class="setting-desc">Reproduzir sons de alerta</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-sounds" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-title">▶️ Auto-iniciar Pausa</div>
+                        <div class="setting-desc">Iniciar pausa automaticamente</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-auto-break">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="setting-item">
+                    <div>
+                        <div class="setting-title">▶️ Auto-iniciar Foco</div>
+                        <div class="setting-desc">Iniciar foco automaticamente</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-auto-focus">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </section>
+
+            <section>
+                <h2>🔈 Volume</h2>
+                <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
+                <div class="volume-display"><span id="volumeValue">50</span>%</div>
+            </section>
+
+            <section>
+                <h2>🌐 Conexão ESP32</h2>
+                <div class="input-group">
+                    <label>URL WebSocket</label>
+                    <input type="text" id="esp32Url" placeholder="ws://192.168.4.1:81" value="ws://192.168.4.1:81">
+                </div>
+                <button id="reconnectESP32" class="secondary full-width">🔄 Reconectar</button>
+            </section>
+
+            <section>
+                <h2>💾 Dados</h2>
+                <button id="importBtn" class="secondary full-width">📤 Importar Dados</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+                <button id="clearDataBtn" class="danger full-width">🗑️ Limpar Todos os Dados</button>
+            </section>
+
+            <section>
+                <h2>ℹ️ Sobre</h2>
+                <p class="about-text">
+                    Pomodoro Pro v2.0<br>
+                    Desenvolvido por Gustavo Giacoia Kumagai<br>
+                    Com suporte ESP32 via WebSocket
+                </p>
+                <div class="shortcuts">
+                    <h3>⌨️ Atalhos de Teclado</h3>
+                    <div class="shortcut-item"><kbd>Espaço</kbd> Iniciar/Pausar</div>
+                    <div class="shortcut-item"><kbd>R</kbd> Resetar</div>
+                    <div class="shortcut-item"><kbd>Ctrl+N</kbd> Próxima atividade</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

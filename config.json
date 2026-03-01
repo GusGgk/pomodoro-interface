@@ -1,0 +1,79 @@
+{
+  "appName": "Pomodoro Pro - GK",
+  "version": "2.0",
+  "author": "Gustavo Giacoia Kumagai",
+  "description": "Sistema completo de produtividade com Pomodoro Timer",
+  
+  "defaultSettings": {
+    "defaultTime": 25,
+    "shortBreak": 5,
+    "longBreak": 15,
+    "longBreakInterval": 4,
+    "autoStartBreak": false,
+    "autoStartPomodoro": false,
+    "notifications": true,
+    "sounds": true,
+    "volume": 0.5,
+    "theme": "dark"
+  },
+  
+  "esp32": {
+    "defaultUrl": "ws://192.168.4.1:81",
+    "reconnectDelay": 5000,
+    "heartbeatInterval": 30000
+  },
+  
+  "categories": [
+    {
+      "id": "work",
+      "name": "Trabalho",
+      "icon": "💼",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "study",
+      "name": "Estudo",
+      "icon": "📚",
+      "color": "#3a86ff"
+    },
+    {
+      "id": "exercise",
+      "name": "Exercício",
+      "icon": "🏃",
+      "color": "#ff6b6b"
+    },
+    {
+      "id": "creative",
+      "name": "Criativo",
+      "icon": "🎨",
+      "color": "#9b59b6"
+    },
+    {
+      "id": "other",
+      "name": "Outro",
+      "icon": "📌",
+      "color": "#95a5a6"
+    }
+  ],
+  
+  "sounds": {
+    "start": "assets/sounds/start.mp3",
+    "pause": "assets/sounds/pause.mp3",
+    "end": "assets/sounds/end-alarm.mp3"
+  },
+  
+  "shortcuts": {
+    "start_pause": "Space",
+    "reset": "r",
+    "next_activity": "Ctrl+n"
+  },
+  
+  "features": {
+    "websocket": true,
+    "notifications": true,
+    "statistics": true,
+    "themes": true,
+    "export_import": true,
+    "keyboard_shortcuts": true
+  }
+}
